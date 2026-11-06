@@ -2,25 +2,70 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1a1a1a;
+  --primary-green: #47A15E;
+  --primary-green-dark: #17643F;
+  --primary-yellow: #F7C35F;
+  --sidebar-w: 16rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary-green: var(--primary-green);
+  --color-primary-green-dark: var(--primary-green-dark);
+  --color-primary-yellow: var(--primary-yellow);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-geist-sans);
+
+  --animate-slide-in: slide-in 200ms ease-out;
+  --animate-fade-in: fade-in 200ms ease-out;
+  @keyframes slide-in {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-in,
+  .animate-fade-in {
+    animation: none;
+  }
+}
+
+/* Page content: up to 96rem wide (same cap as the website), centred in the space next to the sidebar */
+@utility content-container {
+  width: 100%;
+  max-width: 96rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 2.5rem);
+}
+
+/* Large screens: grow the root font size from 16px at 1536px to 20px at 2560px.
+   Tailwind sizes are rem-based, so text, spacing and max-w containers all scale together
+   (media-query breakpoints are unaffected: they resolve rem against the browser default). */
+@media (min-width: 1536px) {
+  html {
+    font-size: clamp(16px, calc(16px + (100vw - 1536px) * 0.0039), 20px);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after,
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
 }
